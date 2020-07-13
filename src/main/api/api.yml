@@ -34,12 +34,16 @@ components:
   schemas:
     MoneyTransfer:
       type: "object"
+      required:
+        - fromAccountNumber
+        - toAccountNumber
+        - ammount
       properties:
         fromAccountNumber:
           type: "string"
         toAccountNumber:
           type: "string"
-        amount:
+        ammount:
           type: "number"
           format: "double"
 
