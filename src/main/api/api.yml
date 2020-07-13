@@ -1,0 +1,74 @@
+openapi: 3.0.3
+
+info:
+  title: API перевода средств
+  description: >
+    Учебный API позволяющий осуществлять перевод средств между аккаунтами.
+    Аккаунт имеет уникальный текстовый идентификатор, имя владельца,
+    баланс (количество денег) и статус (активный/неактивный).
+  version: "1.0"
+
+servers:
+  - url: http://localhost:9092
+
+paths:
+  /transfer:
+    post:
+      summary: "Перевод средств с одного аккаунта на другой"
+      operationId: MoneyTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoneyTransfer'
+      responses:
+        '200':
+          description: Успешный перевод средств
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MoneyTransferResult'
+
+components:
+  schemas:
+    MoneyTransfer:
+      type: "object"
+      properties:
+        fromAccountNumber:
+          type: "string"
+        toAccountNumber:
+          type: "string"
+        amount:
+          type: "number"
+          format: "double"
+
+    MoneyTransferResult:
+      type: "object"
+      properties:
+        from:
+          $ref: '#/components/schemas/JsonAccount'
+        to:
+          $ref: '#/components/schemas/JsonAccount'
+
+    JsonAccount:
+      type: "object"
+      required:
+        - accountNumber
+        - accountName
+        - accountBalance
+        - accountStatus
+      properties:
+        accountNumber:
+          type: "string"
+        accountName:
+          type: "string"
+        accountBalance:
+          type: "number"
+          format: "double"
+        accountStatus:
+          type: "string"
+          description: "Статус аккаунта"
+          enum:
+            - "ACTIVE"
+            - "INACTIVE"
