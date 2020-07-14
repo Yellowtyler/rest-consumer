@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: API перевода средств
   description: >
-    Учебный API позволяющий осуществлять перевод средств между аккаунтами.
+    Учебный API, позволяющий осуществлять перевод средств между аккаунтами.
     Аккаунт имеет уникальный текстовый идентификатор, имя владельца,
     баланс (количество денег) и статус (активный/неактивный).
   version: "1.0"
@@ -15,7 +15,7 @@ paths:
   /transfer:
     post:
       summary: "Перевод средств с одного аккаунта на другой"
-      operationId: MoneyTransfer
+      operationId: moneyTransfer
       requestBody:
         required: true
         content:
@@ -29,6 +29,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MoneyTransferResult'
+        '400':
+          description: Недостаточно средств
+        '404':
+          description: Несуществующий аккаунт
 
 components:
   schemas:
@@ -43,7 +47,7 @@ components:
           type: "string"
         toAccountNumber:
           type: "string"
-        ammount:
+        amount:
           type: "number"
           format: "double"
 
