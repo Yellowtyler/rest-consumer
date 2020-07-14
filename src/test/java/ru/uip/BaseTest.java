@@ -25,8 +25,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
         properties = "server.port=0"
 )
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-public abstract class BaseTest {
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})public abstract class BaseTest {
 
     @LocalServerPort
     int localPort;

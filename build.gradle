@@ -87,6 +87,7 @@ apiContractSpec {
 	snippetsDir = "${buildDir}/generated-snippets/contract"
 	outputDir = "${buildDir}/generated-snippets/specs"
 }
+
 build.dependsOn("asciidoctor")
 asciidoctor.dependsOn("generate-api-spec")
 asciidoctor.dependsOn("openApiGenerate")
