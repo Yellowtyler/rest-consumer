@@ -1,8 +1,12 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	//id "org.springframework.cloud.contract" version "2.2.3.RELEASE"
+	id "org.springframework.cloud.contract" version "2.2.3.RELEASE"
+	id "org.openapi.generator" version "4.3.1"
 	id 'java'
+	id 'jacoco'
+	id "org.asciidoctor.jvm.convert" version "3.2.0"
+	id 'ru.uip.contract.specs' version '0.1'
 }
 
 
@@ -25,6 +29,9 @@ dependencies {
 	}
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-verifier'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+	testImplementation "io.rest-assured:spring-web-test-client:4.3.0"
+	testImplementation "io.rest-assured:rest-assured-all:4.3.0"
+	testImplementation "org.springframework.restdocs:spring-restdocs-restassured"
 }
 
 dependencyManagement {
@@ -33,6 +40,54 @@ dependencyManagement {
 	}
 }
 
+
+openApiGenerate {
+	generatorName = "asciidoc"
+	inputSpec = "$projectDir/src/main/api/api.yaml".toString()
+	templateDir = "$projectDir/src/main/api/template".toString()
+	outputDir = "$buildDir/generated-docs".toString()
+	configOptions = [
+			specDir: "${buildDir}/generated-snippets/specs".toString(),
+			snippetDir: "$projectDir/src/main/api/template".toString()
+	]
+}
+
+asciidoctor {
+	sourceDir  file("${buildDir}")
+	outputDir  file('build/docs')
+}
+
+contracts {
+	baseClassForTests = 'ru.uip.BaseTest'
+	testMode = 'EXPLICIT'
+	testFramework = 'JUNIT5'
+}
+
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
 }
+jacocoTestReport {
+	dependsOn test
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: 'ru/uip/RestConsumerApplication.class')
+		}))
+	}
+}
+
+apiContractSpec {
+	apiSpec = "$projectDir/src/main/api/api.yaml"
+	operationContracts = [
+			'transfer': files(
+					"${projectDir}/src/test/resources/contracts/transfer.yml"
+			)
+	]
+	template = "${projectDir}/src/main/api/template/spec.mustache"
+	snippetsDir = "${buildDir}/generated-snippets/contract"
+	outputDir = "${buildDir}/generated-snippets/specs"
+}
+build.dependsOn("asciidoctor")
+asciidoctor.dependsOn("generate-api-spec")
+asciidoctor.dependsOn("openApiGenerate")
+asciidoctor.mustRunAfter('test')
