@@ -17,24 +17,12 @@ public class MoneyTransferService {
     AccountProxyService accountProxyService;
 
     public ResponseEntity<?> transferMoney(MoneyTransfer moneyTransfer) {
-        JsonAccount from = null;
-        JsonAccount to = null;
         try {
-            from = accountProxyService.findById(moneyTransfer.getFromAccountNumber()).getBody();
-            to = accountProxyService.findById(moneyTransfer.getToAccountNumber()).getBody();
+            JsonAccount from = accountProxyService.findById(moneyTransfer.getFromAccountNumber()).getBody();
+            JsonAccount to = accountProxyService.findById(moneyTransfer.getToAccountNumber()).getBody();
+            return ResponseEntity.ok(new MoneyTransferResult(from, to));
         } catch (HttpClientErrorException e) {
-            return new ResponseEntity("Error! Account wasn't found!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error! Account wasn't found!", HttpStatus.NOT_FOUND);
         }
-
-        if((from.getAccountBalance() - moneyTransfer.getAmount()) >= 0.0) {
-            from.setAccountBalance(from.getAccountBalance() - moneyTransfer.getAmount());
-            to.setAccountBalance(to.getAccountBalance() + moneyTransfer.getAmount());
-        } else {
-            return ResponseEntity.badRequest().body("Error! Insufficient funds!");
-        }
-
-        accountProxyService.updateAccount(from);
-        accountProxyService.updateAccount(to);
-        return ResponseEntity.ok(new MoneyTransferResult(from, to));
     }
 }

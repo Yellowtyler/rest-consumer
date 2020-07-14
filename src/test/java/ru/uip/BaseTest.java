@@ -22,10 +22,12 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "server.port=0"
+        properties = {"server.port=0", "account.url=http://localhost:9090"}
 )
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})public abstract class BaseTest {
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:producer:+:stubs:9090")
+public abstract class BaseTest {
 
     @LocalServerPort
     int localPort;

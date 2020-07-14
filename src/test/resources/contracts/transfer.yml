@@ -20,9 +20,9 @@ response:
       "accountNumber": "1"
       "accountName": "MikeAccount"
       "accountStatus": "ACTIVE"
-      "accountBalance": 100
+      "accountBalance": 1000.0
     "to":
       "accountNumber": "2"
       "accountName": "AlexAccount"
       "accountStatus": "INACTIVE"
-      "accountBalance": 1100
+      "accountBalance": 200.0
