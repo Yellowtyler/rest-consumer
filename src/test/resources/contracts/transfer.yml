@@ -1,0 +1,28 @@
+description: >
+  В теле запроса находятся номер аккаунта отправителя, получателя и сумма которую нужно перевести.
+  В теле ответа возвращаются JSON аккаунты отправителя и получателя.
+name: Перевод денег с первого аккаунта на второй
+request:
+  method: POST
+  url: /transfer
+  headers:
+    Content-type: application/json
+  body:
+    "fromAccountNumber": "1"
+    "toAccountNumber": "2"
+    "amount": 900.0
+response:
+  status: 200
+  headers:
+    Content-Type: application/json
+  body:
+    "from":
+      "accountNumber": "1"
+      "accountName": "MikeAccount"
+      "accountStatus": "ACTIVE"
+      "accountBalance": 100
+    "to":
+      "accountNumber": "2"
+      "accountName": "AlexAccount"
+      "accountStatus": "INACTIVE"
+      "accountBalance": 1100
