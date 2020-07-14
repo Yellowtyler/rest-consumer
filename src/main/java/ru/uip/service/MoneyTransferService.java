@@ -15,8 +15,8 @@ public class MoneyTransferService {
         JsonAccount from = accountProxyService.findById(moneyTransfer.getFromAccountNumber()).getBody();
         JsonAccount to = accountProxyService.findById(moneyTransfer.getToAccountNumber()).getBody();
 
-        from.setAccountBalance(from.getAccountBalance() - moneyTransfer.getAmmount());
-        to.setAccountBalance(to.getAccountBalance() + moneyTransfer.getAmmount());
+        from.setAccountBalance(from.getAccountBalance() - moneyTransfer.getAmount());
+        to.setAccountBalance(to.getAccountBalance() + moneyTransfer.getAmount());
 
         accountProxyService.updateAccount(from);
         accountProxyService.updateAccount(to);
