@@ -7,11 +7,13 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.uip.model.EnumAccountStatus;
 import ru.uip.model.JsonAccount;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -44,11 +46,10 @@ class AccountProxyServiceTest {
         assertThat(expectedAccount, equalTo(resultAccount));
     }
 
-//    @Test
-//    public void testShouldNotFindAccountWithId6() {
-//        ResponseEntity<JsonAccount> resultAccount = accountProxyService.findById("6");
-//        assertThat(HttpStatus.NOT_FOUND, equalTo(resultAccount.getStatusCode()));
-//    }
+    @Test
+    public void testShouldNotFindAccountWithId6() {
+        assertThrows(HttpClientErrorException.NotFound.class, ()->accountProxyService.findById("6"));
+    }
 
     @Test
     public void testUpdateAccountWithId1() {
@@ -61,6 +62,7 @@ class AccountProxyServiceTest {
 
         ResponseEntity<JsonAccount> actualEntity = accountProxyService.updateAccount(mikeAccount);
         assertThat(HttpStatus.OK, equalTo(actualEntity.getStatusCode()));
+        assertThat(mikeAccount, equalTo(actualEntity.getBody()));
     }
 
     @Test
@@ -74,6 +76,7 @@ class AccountProxyServiceTest {
 
         ResponseEntity<JsonAccount> actualEntity = accountProxyService.updateAccount(alexAccount);
         assertThat(HttpStatus.OK, equalTo(actualEntity.getStatusCode()));
+        assertThat(alexAccount, equalTo(actualEntity.getBody()));
     }
 
     @Test
@@ -87,6 +90,7 @@ class AccountProxyServiceTest {
 
         ResponseEntity<JsonAccount> actualEntity = accountProxyService.updateAccount(newAccount);
         assertThat(HttpStatus.OK, equalTo(actualEntity.getStatusCode()));
+        assertThat(newAccount, equalTo(actualEntity.getBody()));
     }
 
 }
