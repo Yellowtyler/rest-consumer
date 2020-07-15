@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import ru.uip.model.JsonAccount;
 
@@ -21,7 +22,12 @@ public class AccountProxyService {
     }
 
     public ResponseEntity<JsonAccount> findById(String accountNumber) {
-        return template.getForEntity(baseUrl + "/account/" + accountNumber, JsonAccount.class);
+        try {
+            ResponseEntity<JsonAccount> jsonAccount = template.getForEntity(baseUrl+ "/account/" + accountNumber, JsonAccount.class);
+            return jsonAccount;
+        } catch (HttpClientErrorException.NotFound exp) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     public ResponseEntity<JsonAccount> updateAccount(JsonAccount jsonAccount) {
