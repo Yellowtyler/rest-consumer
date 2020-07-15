@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.uip.model.MoneyTransfer;
+import ru.uip.model.MoneyTransferResult;
 import ru.uip.service.MoneyTransferService;
 
 import javax.validation.Valid;
@@ -18,8 +19,8 @@ public class MoneyTransferController {
     private MoneyTransferService moneyTransferService;
 
     @PostMapping
-    public ResponseEntity<?> transfer(@RequestBody @Valid MoneyTransfer moneyTransfer) {
-        ResponseEntity<?> moneyTransferResult = moneyTransferService.transferMoney(moneyTransfer);
+    public ResponseEntity<MoneyTransferResult> transfer(@RequestBody @Valid MoneyTransfer moneyTransfer) {
+        ResponseEntity<MoneyTransferResult> moneyTransferResult = moneyTransferService.transferMoney(moneyTransfer);
         return moneyTransferResult;
     }
 }
