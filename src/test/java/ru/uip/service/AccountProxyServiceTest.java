@@ -83,7 +83,7 @@ class AccountProxyServiceTest {
     public void testCreateAccountWithId3() {
         final JsonAccount newAccount = new JsonAccount(
                 "3",
-                "test",
+                "DanielAccount",
                 2001,
                 EnumAccountStatus.ACTIVE
         );
