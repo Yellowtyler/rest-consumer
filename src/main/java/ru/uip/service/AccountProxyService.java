@@ -30,7 +30,7 @@ public class AccountProxyService {
         } catch (HttpClientErrorException.NotFound exp) {
             return ResponseEntity.notFound().build();
         } catch (RestClientException exception) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
         }
     }
 

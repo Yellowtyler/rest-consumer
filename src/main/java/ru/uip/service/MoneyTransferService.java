@@ -20,7 +20,9 @@ public class MoneyTransferService {
         if(from.getStatusCode() == HttpStatus.OK && to.getStatusCode() == HttpStatus.OK) {
             from.getBody().setAccountBalance(from.getBody().getAccountBalance() - moneyTransfer.getAmount());
             to.getBody().setAccountBalance(to.getBody().getAccountBalance() + moneyTransfer.getAmount());
-
+            if(from.getBody().getAccountBalance() - moneyTransfer.getAmount() < 0) {
+                return ResponseEntity.badRequest().build();
+            }
             ResponseEntity<JsonAccount> fromUpdate = accountProxyService.updateAccount(from.getBody());
             ResponseEntity<JsonAccount> toUpdate = accountProxyService.updateAccount(to.getBody());
 
@@ -33,7 +35,7 @@ public class MoneyTransferService {
                 to.getStatusCode() == HttpStatus.NOT_FOUND ){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).build();
         }
     }
 }
