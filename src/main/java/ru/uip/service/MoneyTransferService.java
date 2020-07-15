@@ -1,6 +1,7 @@
 package ru.uip.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.uip.model.JsonAccount;
@@ -18,9 +19,12 @@ public class MoneyTransferService {
         if(from != null && to != null) {
             from.setAccountBalance(from.getAccountBalance() - moneyTransfer.getAmount());
             to.setAccountBalance(to.getAccountBalance() + moneyTransfer.getAmount());
-            accountProxyService.updateAccount(from);
-            accountProxyService.updateAccount(to);
-            return ResponseEntity.ok(new MoneyTransferResult(from, to));
+            ResponseEntity<JsonAccount> fromUpdate = accountProxyService.updateAccount(from);
+            ResponseEntity<JsonAccount> toUpdate = accountProxyService.updateAccount(to);
+            if(fromUpdate.getStatusCode() == HttpStatus.OK && toUpdate.getStatusCode() == HttpStatus.OK) {
+                return ResponseEntity.ok(new MoneyTransferResult(from, to));
+            }
+            return ResponseEntity.badRequest().build();
         } else {
             return ResponseEntity.notFound().build();
         }

@@ -32,6 +32,10 @@ public class AccountProxyService {
 
     public ResponseEntity<JsonAccount> updateAccount(JsonAccount jsonAccount) {
         HttpEntity<JsonAccount> jsonAccountHttpEntity = new HttpEntity<>(jsonAccount);
-        return template.postForEntity(baseUrl+ "/account", jsonAccountHttpEntity, JsonAccount.class);
+        try {
+            return template.postForEntity(baseUrl + "/account", jsonAccountHttpEntity, JsonAccount.class);
+        } catch (HttpClientErrorException.BadRequest exception) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
