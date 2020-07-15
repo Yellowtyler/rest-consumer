@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:producer:+:stubs:9090")
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:async-producer:+:stubs:9090")
 class AccountProxyServiceTest {
     @Autowired
     private AccountProxyService accountProxyService;
@@ -83,7 +83,7 @@ class AccountProxyServiceTest {
     public void testCreateAccountWithId3() {
         final JsonAccount newAccount = new JsonAccount(
                 "3",
-                "test",
+                "DanielAccount",
                 2001,
                 EnumAccountStatus.ACTIVE
         );
