@@ -14,19 +14,26 @@ public class MoneyTransferService {
     AccountProxyService accountProxyService;
 
     public ResponseEntity<MoneyTransferResult> transferMoney(MoneyTransfer moneyTransfer) {
-        JsonAccount from = accountProxyService.findById(moneyTransfer.getFromAccountNumber()).getBody();
-        JsonAccount to = accountProxyService.findById(moneyTransfer.getToAccountNumber()).getBody();
-        if(from != null && to != null) {
-            from.setAccountBalance(from.getAccountBalance() - moneyTransfer.getAmount());
-            to.setAccountBalance(to.getAccountBalance() + moneyTransfer.getAmount());
-            ResponseEntity<JsonAccount> fromUpdate = accountProxyService.updateAccount(from);
-            ResponseEntity<JsonAccount> toUpdate = accountProxyService.updateAccount(to);
+        ResponseEntity<JsonAccount> from = accountProxyService.findById(moneyTransfer.getFromAccountNumber());
+        ResponseEntity<JsonAccount> to = accountProxyService.findById(moneyTransfer.getToAccountNumber());
+
+        if(from.getStatusCode() == HttpStatus.OK && to.getStatusCode() == HttpStatus.OK) {
+            from.getBody().setAccountBalance(from.getBody().getAccountBalance() - moneyTransfer.getAmount());
+            to.getBody().setAccountBalance(to.getBody().getAccountBalance() + moneyTransfer.getAmount());
+
+            ResponseEntity<JsonAccount> fromUpdate = accountProxyService.updateAccount(from.getBody());
+            ResponseEntity<JsonAccount> toUpdate = accountProxyService.updateAccount(to.getBody());
+
             if(fromUpdate.getStatusCode() == HttpStatus.OK && toUpdate.getStatusCode() == HttpStatus.OK) {
-                return ResponseEntity.ok(new MoneyTransferResult(from, to));
+                return ResponseEntity.ok(new MoneyTransferResult(from.getBody(), to.getBody()));
             }
             return ResponseEntity.badRequest().build();
+        }
+        else if (from.getStatusCode() == HttpStatus.NOT_FOUND ||
+                to.getStatusCode() == HttpStatus.NOT_FOUND ){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         }
     }
 }
