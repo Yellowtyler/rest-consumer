@@ -45,18 +45,23 @@ components:
       properties:
         fromAccountNumber:
           type: "string"
+          description: "Аккаунт с котрого переводят деньги"
         toAccountNumber:
           type: "string"
+          description: "Аккаунт на который переводят деньги"
         amount:
           type: "number"
           format: "double"
+          description: "Сумма перевода"
 
     MoneyTransferResult:
       type: "object"
       properties:
         from:
+          description: "Аккаунт с которого переводили деньги"
           $ref: '#/components/schemas/JsonAccount'
         to:
+          description: "Аккаунт на который перевели деньги"
           $ref: '#/components/schemas/JsonAccount'
 
     JsonAccount:
@@ -69,11 +74,14 @@ components:
       properties:
         accountNumber:
           type: "string"
+          description: "Номер аккаунта"
         accountName:
           type: "string"
+          description: "Имя аккаунта"
         accountBalance:
           type: "number"
           format: "double"
+          description: "Балланс аккаунта"
         accountStatus:
           type: "string"
           description: "Статус аккаунта"

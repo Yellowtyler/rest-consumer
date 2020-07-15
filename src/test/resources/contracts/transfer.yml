@@ -10,7 +10,7 @@ request:
   body:
     "fromAccountNumber": "1"
     "toAccountNumber": "2"
-    "amount": 900.0
+    "amount": 100.0
 response:
   status: 200
   headers:
@@ -20,9 +20,43 @@ response:
       "accountNumber": "1"
       "accountName": "MikeAccount"
       "accountStatus": "ACTIVE"
-      "accountBalance": 1000.0
+      "accountBalance": 900.0
     "to":
       "accountNumber": "2"
       "accountName": "AlexAccount"
       "accountStatus": "INACTIVE"
-      "accountBalance": 200.0
+      "accountBalance": 300.0
+---
+description: >
+  Если в теле запроса указать сумму, при вычете которой баланс первого аккаунта станет отрицательным,
+  то сервис возвращает ошибку с кодом HTTP 400 и пустым телом ответа.
+name: Попытка перевода суммы превышающей баланс первого аккаунта.
+request:
+  method: POST
+  url: /transfer
+  headers:
+    Content-type: application/json
+  body:
+    "fromAccountNumber": "1"
+    "toAccountNumber": "2"
+    "amount": 11000.0
+response:
+  status: 400
+  headers:
+    Content-Type: application/json
+---
+description: >
+  Если в теле запроса указать номер несуществующего аккаунта,
+  то сервис возвращает ошибку с кодом HTTP 404 и пустым телом ответа.
+name: Попытка указания номера несуществующего аккаунта.
+request:
+  method: POST
+  url: /transfer
+  headers:
+    Content-type: application/json
+  body:
+    "fromAccountNumber": "1"
+    "toAccountNumber": "3"
+    "amount": 100.0
+response:
+  status: 404
