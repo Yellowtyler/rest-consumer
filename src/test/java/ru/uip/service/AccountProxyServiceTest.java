@@ -48,7 +48,8 @@ class AccountProxyServiceTest {
 
     @Test
     public void testShouldNotFindAccountWithId6() {
-        assertThrows(HttpClientErrorException.NotFound.class, ()->accountProxyService.findById("6"));
+        ResponseEntity<JsonAccount> resultAccount = accountProxyService.findById("6");
+        assertThat(HttpStatus.NOT_FOUND, equalTo(resultAccount.getStatusCode()));
     }
 
     @Test
