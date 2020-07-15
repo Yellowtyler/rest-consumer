@@ -79,8 +79,8 @@ jacocoTestReport {
 apiContractSpec {
 	apiSpec = "$projectDir/src/main/api/api.yaml"
 	operationContracts = [
-			'transfer': files(
-					"${projectDir}/src/test/resources/contracts/transfer.yml"
+			'moneyTransfer': files(
+					"${projectDir}/src/test/resources/contracts/moneyTransfer.yml"
 			)
 	]
 	template = "${projectDir}/src/main/api/template/spec.mustache"
