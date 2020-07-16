@@ -7,17 +7,15 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
 import ru.uip.model.EnumAccountStatus;
 import ru.uip.model.JsonAccount;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:async-producer:+:stubs:9090")
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:producer:+:stubs:9090")
 class AccountProxyServiceTest {
     @Autowired
     private AccountProxyService accountProxyService;
@@ -84,7 +82,7 @@ class AccountProxyServiceTest {
     public void testCreateAccountWithId3() {
         final JsonAccount newAccount = new JsonAccount(
                 "3",
-                "DanielAccount",
+                "test",
                 2001,
                 EnumAccountStatus.ACTIVE
         );

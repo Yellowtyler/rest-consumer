@@ -26,7 +26,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 )
 @DirtiesContext
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
-@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:async-producer:+:stubs:9090")
+@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL, ids = "ru.uip:producer:+:stubs:9090")
 public abstract class BaseTest {
 
     @LocalServerPort
