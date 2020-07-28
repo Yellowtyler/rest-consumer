@@ -18,7 +18,7 @@ public class MoneyTransferController {
     @Autowired
     private MoneyTransferService moneyTransferService;
 
-    @PostMapping
+    @PostMapping(consumes = {"application/json", "application/xml"}, produces={"application/json", "application/xml"})
     public ResponseEntity<MoneyTransferResult> transfer(@RequestBody @Valid MoneyTransfer moneyTransfer) {
         ResponseEntity<MoneyTransferResult> moneyTransferResult = moneyTransferService.transferMoney(moneyTransfer);
         return moneyTransferResult;

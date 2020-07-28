@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ru.uip.model.CreateJsonAccount;
 import ru.uip.model.JsonAccount;
 
 @Service
@@ -35,7 +36,13 @@ public class AccountProxyService {
     }
 
     public ResponseEntity<JsonAccount> updateAccount(JsonAccount jsonAccount) {
-        HttpEntity<JsonAccount> jsonAccountHttpEntity = new HttpEntity<>(jsonAccount);
+        CreateJsonAccount createJsonAccount = new CreateJsonAccount(
+                jsonAccount.getAccountNumber(),
+                jsonAccount.getAccountName(),
+                jsonAccount.getAccountBalance(),
+                jsonAccount.getAccountStatus()
+        );
+        HttpEntity<CreateJsonAccount> jsonAccountHttpEntity = new HttpEntity<>(createJsonAccount);
         try {
             return template.postForEntity(baseUrl + "/account", jsonAccountHttpEntity, JsonAccount.class);
         } catch (HttpClientErrorException.BadRequest exception) {
