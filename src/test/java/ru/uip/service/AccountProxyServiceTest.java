@@ -7,6 +7,7 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import ru.uip.model.CreateJsonAccount;
 import ru.uip.model.EnumAccountStatus;
 import ru.uip.model.JsonAccount;
 

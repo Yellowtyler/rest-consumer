@@ -2,9 +2,7 @@ package ru.uip.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
@@ -42,8 +40,11 @@ public class AccountProxyService {
                 jsonAccount.getAccountBalance(),
                 jsonAccount.getAccountStatus()
         );
-        HttpEntity<CreateJsonAccount> jsonAccountHttpEntity = new HttpEntity<>(createJsonAccount);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<CreateJsonAccount> jsonAccountHttpEntity = new HttpEntity<>(createJsonAccount, headers);
         try {
+
             return template.postForEntity(baseUrl + "/account", jsonAccountHttpEntity, JsonAccount.class);
         } catch (HttpClientErrorException.BadRequest exception) {
             return ResponseEntity.badRequest().build();

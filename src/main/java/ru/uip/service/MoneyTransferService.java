@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.uip.model.CreateJsonAccount;
 import ru.uip.model.JsonAccount;
 import ru.uip.model.MoneyTransfer;
 import ru.uip.model.MoneyTransferResult;
