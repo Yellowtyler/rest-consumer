@@ -13,12 +13,12 @@ import ru.uip.service.MoneyTransferService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/transfer")
-public class MoneyTransferController {
+@RequestMapping("/transfer/xml")
+public class MoneyTransferXmlController {
     @Autowired
     private MoneyTransferService moneyTransferService;
 
-    @PostMapping(produces = "application/json", consumes = "application/json")
+    @PostMapping(produces = "application/xml", consumes = "application/xml")
     public ResponseEntity<MoneyTransferResult> transfer(@RequestBody @Valid MoneyTransfer moneyTransfer) {
         ResponseEntity<MoneyTransferResult> moneyTransferResult = moneyTransferService.transferMoney(moneyTransfer);
         return moneyTransferResult;
